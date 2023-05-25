@@ -74,4 +74,10 @@ WHERE ar.nb_art = 2
 AND a.id_fournisseur = ar.id_fournisseur
 GROUP BY nom_four
 
+CREATE OR REPLACE VIEW delai_moyen_four AS
+SELECT AVG(delai) AS delai_moy
+FROM acheter
+GROUP BY id_fournisseur
+
+
 -- Ne fonctionne pas correctement.
