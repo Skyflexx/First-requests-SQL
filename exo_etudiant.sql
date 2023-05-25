@@ -1,6 +1,6 @@
 -- Nombre total d'étudiants : 
 
-SELECT COUNT(*)
+SELECT COUNT(id_etudiant)
 FROM etudiant
 
 -- Note la plus haute et la plus basse :
@@ -40,3 +40,9 @@ CREATE OR REPLACE VIEW moyenne_promo AS
 SELECT AVG(evaluer.note)
 FROM evaluer
 
+-- Etudiants qui ont une moyenne générale supérieure ou égale à la moyenne de la promo
+
+SELECT etudiant.nom, moyenne_etudiant.`AVG(evaluer.note)` -- on récupère le nom de l'étudiant ainsi que sa moyenne depuis la précédente View. Attention aux accents graves c'est important pour éviter de créer une fct.
+FROM etudiant, moyenne_etudiant, moyenne_promo -- Depuis la table étudiant (pour le nom), ainsi que de noes 2 views précédemment créées.
+WHERE moyenne_etudiant.`AVG(evaluer.note)` >= moyenne_promo.`AVG(evaluer.note)` -- On met une condition, là où la moy de l'étudiant est supérieure à la moy promo.
+AND etudiant.nom = moyenne_etudiant.nom -- Et où le nom de l'étudiant de la table étudiant correspond au nom de l'étudiant dans la moyenne. Sinon il sortira tous les étudiants.
