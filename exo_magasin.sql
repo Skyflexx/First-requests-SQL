@@ -30,3 +30,48 @@ FROM acheter a, fournisseurs f
 WHERE a.delai > 20
 AND a.id_fournisseur = f.id_fournisseur
 GROUP BY nom_four, ville_four, adresse_four -- Group By doit être égal au contenu du SELECT sinon il y aura une erreur. (sauf si fct en +)
+
+-- Nombres d'articles référencés
+
+SELECT COUNT(id_article)
+FROM articles art
+WHERE libelle IS NOT NULL -- On s'assure que tout soit bien rempli
+AND stock IS NOT NULL
+AND prix_invent IS NOT NULL
+
+-- Valeur du stock
+
+SELECT SUM(prix_invent) AS valeur_totale 
+FROM articles art
+
+-- OU si le prix invent ne correspond pas au total en  fct du stock :
+
+SELECT SUM(prix_invent*stock) AS valeur_totale
+FROM articles art
+
+-- Numero et libelle des articles triés dans l'ordre decroissant des stocks
+
+SELECT id_article, libelle
+FROM articles
+ORDER BY stock DESC
+
+-- Liste pour chaque article (numero et libellé) du prix d'achat max, min et moy
+
+
+
+-- Délai moyen pour chaque fournisseur proposant au moins 2 articles
+
+CREATE OR REPLACE VIEW articles_par_fournisseur AS 
+
+SELECT COUNT(id_article) AS nb_art, id_fournisseur
+FROM acheter a
+GROUP BY id_fournisseur
+
+
+SELECT AVG(delai) AS delai_moyen, nom_four
+FROM acheter a, fournisseurs f, articles_par_fournisseur ar
+WHERE ar.nb_art = 2
+AND a.id_fournisseur = ar.id_fournisseur
+GROUP BY nom_four
+
+-- Ne fonctionne pas correctement.
