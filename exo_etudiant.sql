@@ -46,3 +46,7 @@ SELECT etudiant.nom, etudiant.prenom, moyenne_etudiant.`AVG(evaluer.note)` AS mo
 FROM etudiant, moyenne_etudiant, moyenne_promo -- Depuis la table étudiant (pour le nom), ainsi que de noes 2 views précédemment créées.
 WHERE moyenne_etudiant.`AVG(evaluer.note)` >= moyenne_promo.`AVG(evaluer.note)` -- On met une condition, là où la moy de l'étudiant est supérieure à la moy promo.
 AND etudiant.nom = moyenne_etudiant.nom -- Et où le nom de l'étudiant de la table étudiant correspond au nom de l'étudiant dans la moyenne. Sinon il sortira tous les étudiants.
+
+-- COMMENTAIRES DIVERS POUR LA SUITE
+
+-- On pourra ajouter un as après le AVG evaluer.note etc afin de nommer le resultat qui sera le nouveau nom de la colonne. Ce sera + simple de le récupérer par la suite via des requêtes.
