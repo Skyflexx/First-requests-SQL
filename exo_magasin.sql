@@ -61,23 +61,18 @@ ORDER BY stock DESC
 
 -- Délai moyen pour chaque fournisseur proposant au moins 2 articles
 
-CREATE OR REPLACE VIEW articles_par_fournisseur AS 
+CREATE OR REPLACE VIEW nombre_articles AS 
 
 SELECT COUNT(id_article) AS nb_art, id_fournisseur
 FROM acheter a
 GROUP BY id_fournisseur
 
 
-SELECT AVG(delai) AS delai_moyen, nom_four
-FROM acheter a, fournisseurs f, articles_par_fournisseur ar
-WHERE ar.nb_art = 2
-AND a.id_fournisseur = ar.id_fournisseur
-GROUP BY nom_four
-
-CREATE OR REPLACE VIEW delai_moyen_four AS
-SELECT AVG(delai) AS delai_moy
-FROM acheter
-GROUP BY id_fournisseur
+SELECT a.id_fournisseur, AVG(delai) AS delai_moy
+FROM acheter a, nombre_articles nb
+WHERE nb.nb_art >= 2
+AND nb.id_fournisseur = a.id_fournisseur
+GROUP BY a.id_fournisseur
 
 
--- Ne fonctionne pas correctement.
+
