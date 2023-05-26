@@ -57,6 +57,10 @@ ORDER BY stock DESC
 
 -- Liste pour chaque article (numero et libellé) du prix d'achat max, min et moy
 
+SELECT art.id_article, art.libelle, MAX(a.prix_achat) AS prix_max, MIN(a.prix_achat) AS prix_min, AVG(a.prix_achat) AS prix_moyen
+FROM acheter a, articles art
+WHERE a.id_article = art.id_article
+GROUP BY a.id_article
 
 
 -- Délai moyen pour chaque fournisseur proposant au moins 2 articles
