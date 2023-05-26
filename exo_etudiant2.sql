@@ -119,4 +119,19 @@ WHERE m.id_matiere = c.id_matiere AND c.id_epreuve = ep.id_epreuve AND ep.id_epr
 AND epm.nbr_ep > 1 AND epm.libelle = m.libelle
 GROUP BY m.libelle
 
+-- Moyenne des notes obtenues aux épreuves (indiquer numero epreuve) où moins de 6 étudiants ont été notés
 
+--step 1 : Compter le nombre d'étudiants par épreuve. On créé une view.
+
+CREATE OR REPLACE VIEW etudiants_par_epreuve AS
+SELECT COUNT(ev.id_etudiant) AS nbr_etudiants, ev.id_epreuve
+FROM evaluer ev
+GROUP BY ev.id_epreuve
+
+-- step2 : Utiliser la view qui nous servira de filtre pour n'afficher que certaines moyennes.
+
+SELECT AVG(ev.note), ev.id_epreuve
+FROM evaluer ev, etudiants_par_epreuve epe
+WHERE ev.id_epreuve = epe.id_epreuve -- Sans oublier de lier notre view à la table requise pour selectionner les bons resultats.
+AND epe.nbr_etudiants < 6
+GROUP BY ev.id_epreuve
