@@ -81,3 +81,42 @@ FROM etudiant et, evaluer ev, liste_epreuves li
 WHERE et.id_etudiant = ev.id_etudiant
 AND ev.id_epreuve = li.id_epreuve
 AND ev.note IS NOT NULL
+
+-- Nom, prénom des étudiants qui ont eu au moins un 20
+
+SELECT ev.note, et.nom, et.prenom
+FROM etudiant et, evaluer ev
+WHERE et.id_etudiant = ev.id_etudiant
+AND ev.note = 20
+
+-- Selectionner la moyenne des notes de chaque étudiant
+
+SELECT et.nom, et.prenom, AVG(note) AS moyenne_generale
+FROM evaluer ev, etudiant et
+WHERE ev.id_etudiant = et.id_etudiant
+GROUP BY ev.id_etudiant
+
+-- Idem mais on classe de la meilleure à la moins bonne
+
+SELECT et.nom, et.prenom, AVG(note) AS moyenne_generale
+FROM evaluer ev, etudiant et
+WHERE ev.id_etudiant = et.id_etudiant
+GROUP BY ev.id_etudiant
+ORDER BY moyenne_generale DESC
+
+-- Moyenne des notes pour les matières (indiquer libelle) comportant + d'une épreuve
+
+CREATE OR REPLACE VIEW epreuves_par_mat AS
+SELECT COUNT(id_epreuve) AS nbr_ep, m.libelle
+FROM concerner c, matiere m
+WHERE c.id_matiere = m.id_matiere
+GROUP BY c.id_matiere
+
+
+SELECT m.libelle, AVG(note) AS moyenne_matiere
+FROM matiere m, epreuve ep, evaluer ev, concerner c, epreuves_par_mat epm
+WHERE m.id_matiere = c.id_matiere AND c.id_epreuve = ep.id_epreuve AND ep.id_epreuve = ev.id_epreuve
+AND epm.nbr_ep > 1 AND epm.libelle = m.libelle
+GROUP BY m.libelle
+
+
