@@ -106,12 +106,15 @@ ORDER BY moyenne_generale DESC
 
 -- Moyenne des notes pour les matières (indiquer libelle) comportant + d'une épreuve
 
+-- step 1 : On va chercher à afficher le nbr d'epreuve par matière.
+
 CREATE OR REPLACE VIEW epreuves_par_mat AS
 SELECT COUNT(id_epreuve) AS nbr_ep, m.libelle
 FROM concerner c, matiere m
 WHERE c.id_matiere = m.id_matiere
 GROUP BY c.id_matiere
 
+-- step 2 : Pour le réutiliser et poser une condition dessus.
 
 SELECT m.libelle, AVG(note) AS moyenne_matiere
 FROM matiere m, epreuve ep, evaluer ev, concerner c, epreuves_par_mat epm
