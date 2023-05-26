@@ -23,6 +23,18 @@ SELECT id_fournisseur, nom_four, ville_four, adresse_four
 FROM fournisseurs four
 WHERE LOCATE('STE', nom_four) > 0
 
+-- Autre façon de faire 
+
+SELECT f.nom_four
+
+FROM fournisseurs f
+
+WHERE f.nom_four LIKE 'STE%'
+
+'STE%' commence par STE
+'%STE' fini par STE
+
+
 -- Noms et adresse des fournisseurs qui proposent des articles pour lesquels le délai d'approvisionnement est supérieur à 20 jours
 
 SELECT nom_four, ville_four, adresse_four
