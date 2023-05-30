@@ -278,6 +278,18 @@ b.id_personnage IS NULL
 
 -- Nom du/des personnages qui n'ont pas le droit de boire de la popo magique
 
+SELECT
+ p.nom_personnage, po.nom_potion
+FROM
+ personnage p
+LEFT JOIN autoriser_boire ab
+	ON p.id_personnage = ab.id_personnage
+INNER JOIN potion po
+	ON ab.id_potion = po.id_potion
+WHERE 
+	po.nom_potion != "Magique"
+OR 
+	ab.id_personnage IS NULL
 
 
 
