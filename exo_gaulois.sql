@@ -297,40 +297,60 @@ OR
 
 -- Ajouter le personnage Champdeblix, Agriculteur résidant à la ferme Hantassion de Rotomagus
 
-INSERT INTO personnage (nom_personnage, adresse_personnage, id_specialite, id_lieu)
-VALUE ('Champdeblix', 'Ferme Hantassion', (SELECT id_specialite FROM specialite WHERE nom_specialite = 'Agriculteur'), (SELECT id_lieu FROM lieu WHERE nom_lieu = 'Rotomagus')) 
+INSERT INTO 
+	personnage (nom_personnage, adresse_personnage, id_specialite, id_lieu)
+VALUE 
+	('Champdeblix', 'Ferme Hantassion', 
+	(SELECT id_specialite FROM specialite WHERE nom_specialite = 'Agriculteur'), 
+	(SELECT id_lieu FROM lieu WHERE nom_lieu = 'Rotomagus')) 
 
 -- Dans personnage on a que les id. Donc il suffit de faire un select de l'ID correspondant à notre entrée (comme le métier vu qu'il est déjà enregistré dans une table)
 
 
 -- Autoriser Bonemine à boire de la popo magique
 
-INSERT INTO autoriser_boire (id_personnage, id_potion)
-VALUE ((SELECT id_personnage FROM personnage  WHERE nom_personnage = 'Bonemine'),
-(SELECT id_potion FROM potion po WHERE po.nom_potion = 'Magique'))
+INSERT INTO 
+	autoriser_boire (id_personnage, id_potion)
+VALUE 
+	((SELECT id_personnage FROM personnage  WHERE nom_personnage = 'Bonemine'),
+	(SELECT id_potion FROM potion po WHERE po.nom_potion = 'Magique'))
 
 
 --- Delete les casques grecs qui n'ont pas été pris lors d'une bataille
 -- Ne fonctionne pas. Recherches en cours.
 
-DELETE FROM casque
-WHERE (SELECT id_type_casque FROM casque ca, type_casque tc WHERE tc.id_type_casque = ca.id_type_casque AND tc.nom_type_casque = 'Grec')
-SELECT b.nom_bataille
-FROM bataille b
-INNER JOIN prendre_casque pc
-ON b.id_bataille = pc.id_bataille
-INNER JOIN casque c
-ON c.id_casque = pc.id_casque
-INNER JOIN type_casque tc
-ON tc.id_type_casque = c.id_type_casque
-AND tc.nom_type_casque != 'Grec'
-GROUP BY b.nom_bataille
+DELETE FROM 
+	casque 
+WHERE 
+	(SELECT id_type_casque FROM casque ca, type_casque tc WHERE tc.id_type_casque = ca.id_type_casque AND tc.nom_type_casque = 'Grec') -- Soucis pour identifier le casque
+SELECT 
+	b.nom_bataille
+FROM 
+	bataille b
+INNER JOIN 
+	prendre_casque pc
+	ON b.id_bataille = pc.id_bataille
+INNER JOIN 
+	casque c
+	ON c.id_casque = pc.id_casque
+INNER JOIN 
+	type_casque tc
+	ON tc.id_type_casque = c.id_type_casque
+AND 
+	tc.nom_type_casque != 'Grec'
+GROUP BY 
+	b.nom_bataille
+
+
 
 -- Modifier l'adresse de Zerozerosix
 
 -- Ne fonctionne pas
 
-UPDATE personnage p
-SET p.adresse_personnage = 'Prison'
+UPDATE 
+	personnage p
+SET 
+	p.adresse_personnage = 'Prison'
 -- SET p.id_lieu = (SELECT l.id_lieu FROM lieu l WHERE l.nom_lieu = 'Condate')
-WHERE p.nom_personnage = 'Zérozérosix'
+WHERE 
+	p.nom_personnage = 'Zérozérosix'
