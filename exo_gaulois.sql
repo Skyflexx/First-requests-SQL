@@ -221,3 +221,49 @@ GROUP BY
 ORDER BY 
     prix_total DESC
 
+-- Nom des potions dont un des ingrédients est le poisson frais
+
+SELECT 
+	p.nom_potion
+FROM
+	potion p
+	INNER JOIN composer c
+		ON c.id_potion = p.id_potion
+	INNER JOIN ingredient i
+		ON c.id_ingredient = i.id_ingredient
+WHERE i.nom_ingredient = "Poisson frais"
+
+
+
+-- Nom du/des lieux possédant le + d'habitants, en dehors du village gaulois
+
+SELECT l.nom_lieu, COUNT(id_personnage) AS nombre_hts
+
+FROM
+	lieu l
+	INNER JOIN personnage p
+		ON p.id_lieu = l.id_lieu
+GROUP BY 
+	l.nom_lieu	
+HAVING
+	nombre_hts >= ALL
+		(
+			SELECT 
+				COUNT(id_personnage)
+			FROM
+				lieu li
+				INNER JOIN personnage pe
+					ON pe.id_lieu = li.id_lieu										
+			WHERE 
+				li.nom_lieu != "Village gaulois"			
+			GROUP BY 
+				li.nom_lieu				
+		)		
+AND 
+	l.nom_lieu != "Village gaulois"
+ORDER BY
+	l.nom_lieu ASC
+		
+
+		
+
