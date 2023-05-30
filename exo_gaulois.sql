@@ -265,5 +265,19 @@ ORDER BY
 	l.nom_lieu ASC
 		
 
-		
+-- Nom des personnages qui n'ont jamais bu aucune potion
+
+SELECT 
+	p.nom_personnage
+FROM 
+	personnage p
+	LEFT JOIN boire b
+		ON p.id_personnage = b.id_personnage
+WHERE 
+b.id_personnage IS NULL
+
+-- Nom du/des personnages qui n'ont pas le droit de boire de la popo magique
+
+
+
 
