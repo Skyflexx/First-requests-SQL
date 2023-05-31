@@ -355,6 +355,8 @@ AND id_casque NOT IN (
 
 -- Modifier l'adresse de Zerozerosix
 
+-- Une seule requête à la fois
+
 UPDATE personnage p
 SET p.adresse_personnage = 'Prison'
 WHERE p.nom_personnage = 'Zérozérosix';
