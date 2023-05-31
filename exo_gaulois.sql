@@ -322,12 +322,12 @@ VALUE
 DELETE FROM 
 	casque ca
 WHERE 
-	ca.id_casque IN
+	ca.id_casque IN -- Si la subquery retourne + qu'une row, on doit utiliser IN ou not IN selon le cas
 		( 
 			SELECT
 				c.id_casque
 			FROM
-				(SELECT * FROM casque) AS c
+				(SELECT * FROM casque) AS c -- SQL ne permet pas de target la table casque directement
 				INNER JOIN type_casque tc
 					ON c.id_type_casque = tc.id_type_casque
 				LEFT JOIN prendre_casque pc
