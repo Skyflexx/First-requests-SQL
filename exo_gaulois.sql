@@ -320,26 +320,23 @@ VALUE
 -- Ne fonctionne pas. Recherches en cours.
 
 DELETE FROM 
-	casque 
-WHERE 
-	(SELECT id_type_casque FROM casque ca, type_casque tc WHERE tc.id_type_casque = ca.id_type_casque AND tc.nom_type_casque = 'Grec') -- Soucis pour identifier le casque
-SELECT 
-	b.nom_bataille
-FROM 
-	bataille b
-INNER JOIN 
-	prendre_casque pc
-	ON b.id_bataille = pc.id_bataille
-INNER JOIN 
 	casque c
-	ON c.id_casque = pc.id_casque
-INNER JOIN 
-	type_casque tc
-	ON tc.id_type_casque = c.id_type_casque
-AND 
-	tc.nom_type_casque != 'Grec'
-GROUP BY 
-	b.nom_bataille
+WHERE 
+	nom_casque = 
+		( 
+			SELECT
+				c.nom_casque
+			FROM
+				casque c
+				INNER JOIN type_casque tc
+					ON c.id_type_casque = tc.id_type_casque
+				LEFT JOIN prendre_casque pc
+					ON c.id_casque = pc.id_casque
+				
+			WHERE
+				pc.id_casque IS NULL
+			AND tc.nom_type_casque = "Grec"
+		);
 
 
 
