@@ -360,5 +360,12 @@ SET p.adresse_personnage = 'Prison'
 WHERE p.nom_personnage = 'Zérozérosix';
 
 UPDATE personnage p
-SET p.id_lieu = ( SELECT l.id_lieu FROM lieu l WHERE l.nom_lieu = 'Condate')
+SET p.id_lieu = ( 
+			SELECT l.id_lieu 
+			FROM lieu l 
+			WHERE l.nom_lieu = 'Condate'
+)
 WHERE p.nom_personnage = 'Zérozérosix';
+
+-- La potion Soupe ne doit plus contenir de persil
+
