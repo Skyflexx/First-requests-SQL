@@ -316,8 +316,10 @@ VALUE
 	(SELECT id_potion FROM potion po WHERE po.nom_potion = 'Magique'))
 
 
+
+
 --- Delete les casques grecs qui n'ont pas été pris lors d'une bataille
--- Ne fonctionne pas. Recherches en cours.
+
 
 DELETE FROM 
 	casque ca
