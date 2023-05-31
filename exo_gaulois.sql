@@ -320,14 +320,14 @@ VALUE
 -- Ne fonctionne pas. Recherches en cours.
 
 DELETE FROM 
-	casque c
+	casque ca
 WHERE 
-	nom_casque = 
+	ca.id_casque IN
 		( 
 			SELECT
-				c.nom_casque
+				c.id_casque
 			FROM
-				casque c
+				(SELECT * FROM casque) AS c
 				INNER JOIN type_casque tc
 					ON c.id_type_casque = tc.id_type_casque
 				LEFT JOIN prendre_casque pc
@@ -338,7 +338,18 @@ WHERE
 			AND tc.nom_type_casque = "Grec"
 		);
 
+-- AUTRE SOLUTION (Avec un autre style d'indentation)
 
+DELETE FROM casque
+WHERE id_type_casque = (
+		SELECT id_type_casque
+		FROM type_casque
+		WHERE nom_type_casque = 'Grec'
+)
+AND id_casque NOT IN (
+		SELECT pc.id_casque
+		FROM prendre_casque pc
+)
 
 -- Modifier l'adresse de Zerozerosix
 
