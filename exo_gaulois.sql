@@ -371,3 +371,14 @@ WHERE p.nom_personnage = 'Zérozérosix';
 
 -- La potion Soupe ne doit plus contenir de persil
 
+DELETE FROM composer
+WHERE id_potion = (
+		SELECT id_potion
+		FROM potion
+		WHERE nom_potion = 'Soupe'
+	)
+AND id_ingredient = (
+		SELECT id_ingredient
+		FROM ingredient i
+		WHERE i.nom_ingredient = 'Persil'		
+	)
