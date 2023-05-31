@@ -382,3 +382,18 @@ AND id_ingredient = (
 		FROM ingredient i
 		WHERE i.nom_ingredient = 'Persil'		
 	)
+
+-- Obelix s'est trompé, ce sont 42 casques Weisenau et non Ostrogoths qu'i la pris lors de la bataille 'Attaque de la banque postale".
+
+UPDATE prendre_casque pc
+SET pc.id_casque = (
+		SELECT id_casque
+		FROM casque c	
+		WHERE c.nom_casque = 'Weisenau'
+	),
+	pc.qte = 42
+WHERE pc.id_bataille = (
+		SELECT b.id_bataille
+		FROM bataille b
+		WHERE nom_bataille = 'Attaque de la banque postale'
+	)
