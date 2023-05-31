@@ -360,7 +360,11 @@ AND id_casque NOT IN (
 UPDATE personnage p
 SET 
 	p.adresse_personnage = 'Prison',
-	p.id_lieu = ( SELECT l.id_lieu FROM lieu l WHERE l.nom_lieu = 'Condate')
+	p.id_lieu = ( 
+		SELECT l.id_lieu 
+		FROM lieu l 
+		WHERE l.nom_lieu = 'Condate'
+	)
 WHERE p.nom_personnage = 'Zérozérosix';
 
 
