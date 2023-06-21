@@ -1,4 +1,4 @@
--- Nombre total d'étudiants : 
+-- Nombre total d'étudiants:
 
 SELECT COUNT(id_etudiant)
 FROM etudiant
